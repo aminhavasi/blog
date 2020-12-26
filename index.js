@@ -8,9 +8,13 @@ const rfs = require('rotating-file-stream');
 const morgan = require('morgan');
 const path = require('path');
 
+const { db } = require('./src/db/mongo');
 //envirement variable config
 require('dotenv').config({ path: './config/config.env' });
 const port = process.env.PORT || 8000;
+
+//db
+db();
 
 //loger file
 const httpLogger = rfs.createStream('access.log', {
