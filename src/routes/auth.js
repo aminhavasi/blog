@@ -6,7 +6,7 @@ const { registerValidator } = require('./../validator/auth');
 const { date } = require('./../utils/moment');
 const { hash } = require('./../functions/hash');
 const { errorHandler } = require('../utils/error');
-
+const { genToken } = require('./../functions/genToken');
 //register route
 router.post('/register', async (req, res) => {
     try {
@@ -17,9 +17,12 @@ router.post('/register', async (req, res) => {
         req.body.date = date;
         const newUser = await new User(req.body);
         const hashed = await hash(newUser.password);
-        if (!hashed) errorHandler('hashing error', 1005);
+        if (!hashed) throw errorHandler('hashing error', 1005);
         newUser.password = hashed;
         await newUser.save();
+        const tokenRes = await genToken(newUser._id, newUser.adminLevel);
+        if (tokenRes !== true)
+            throw errorHandler('generate token failed!', 1006);
         res.status(201).send('user successfully added');
     } catch (err) {
         console.log(err);

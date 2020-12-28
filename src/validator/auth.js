@@ -1,5 +1,8 @@
+//modules
 const Joi = require('joi');
 const { dateRegexValidator } = require('./../utils/regex');
+
+//register validator
 const registerValidator = (body) => {
     const schema = Joi.object({
         name: Joi.string().min(3).max(255).required(),

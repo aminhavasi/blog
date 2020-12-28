@@ -1,6 +1,8 @@
+//modules
 const mongoose = require('mongoose');
 const { dateRegexValidator } = require('./../utils/regex');
-const bcrypt = require('bcryptjs');
+
+//an schema for user schema
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -47,23 +49,12 @@ const userSchema = new mongoose.Schema({
     },
 });
 
-// userSchema.pre('save', function (next) {
-//     let user = this;
-
-//     if (user.isModified('password')) {
-//         bcrypt.genSalt(10, (err, salt) => {
-//             if (err) return false;
-//             bcrypt.hash(user.password, salt, (err, hash) => {
-//                 if (err) return false;
-//                 user.password = hash;
-//                 next();
-//             });
-//         });
-//     } else {
-//         next();
-//     }
-// });
-
+//virtual filed for when need to exec all data
 const User = mongoose.model('User', userSchema);
+userSchema.virtual('user', {
+    ref: 'Token',
+    localField: '_id',
+    foreignField: 'user',
+});
 
 module.exports = User;
