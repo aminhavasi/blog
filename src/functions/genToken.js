@@ -16,7 +16,7 @@ const genToken = async (id, access) => {
         };
         const newToken = await new Token(objToken);
         await newToken.save();
-        return true;
+        return newToken.token;
     } catch (err) {
         return false;
     }

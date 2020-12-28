@@ -8,4 +8,9 @@ const hash = async (password) => {
     return hash;
 };
 
-module.exports = { hash };
+//compire passwords
+const deHash = async (bodyPassword, password) => {
+    let compire = await bcrypt.compare(bodyPassword, password);
+    return compire;
+};
+module.exports = { hash, deHash };

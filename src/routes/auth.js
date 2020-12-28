@@ -2,9 +2,9 @@
 const express = require('express');
 const router = express.Router();
 const User = require('./../models/user');
-const { registerValidator } = require('./../validator/auth');
+const { registerValidator, loginValidator } = require('./../validator/auth');
 const { date } = require('./../utils/moment');
-const { hash } = require('./../functions/hash');
+const { hash, deHash } = require('./../functions/hash');
 const { errorHandler } = require('../utils/error');
 const { genToken } = require('./../functions/genToken');
 //register route
@@ -21,12 +21,36 @@ router.post('/register', async (req, res) => {
         newUser.password = hashed;
         await newUser.save();
         const tokenRes = await genToken(newUser._id, newUser.adminLevel);
-        if (tokenRes !== true)
+        if (tokenRes === false)
             throw errorHandler('generate token failed!', 1006);
-        res.status(201).send('user successfully added');
+        res.status(201)
+            .header('x-auth-token', tokenRes)
+            .send('user successfully added');
     } catch (err) {
         console.log(err);
         res.status(400).send('something went wrong');
+    }
+});
+
+//login route
+
+router.post('/login', async (req, res) => {
+    const { error } = await loginValidator(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    try {
+        const user = await User.findOne({ email: req.body.email });
+        if (!user)
+            return res.status(403).send('email or password is incorrect');
+        const resPass = await deHash(req.body.password, user.password);
+        if (!resPass)
+            return res.status(400).send('email or password is incorrect');
+        const tokenRes = await genToken(user._id, user.adminLevel);
+
+        await res.status(200).header('x-auth-token', tokenRes).send('ok');
+    } catch (error) {
+        console.log(error);
+        res.status(400).send('bad');
     }
 });
 
