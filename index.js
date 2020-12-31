@@ -20,6 +20,8 @@ db();
 const httpLogger = rfs.createStream('access.log', {
     path: path.resolve(__dirname + '/src/logs'),
     interval: '1d',
+    size: '1G',
+    compress: 'gzip',
 });
 
 //confing for json parse
@@ -40,6 +42,7 @@ app.use(async (err, req, res, next) => {
 });
 
 app.use('/api/auth', require('./src/routes/auth'));
+app.use('/api/forgetpassword', require('./src/routes/recoveryWithEmail'));
 app.use(async (req, res) => {
     res.status(404).send('the request is incorrect!');
 });

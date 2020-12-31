@@ -53,6 +53,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
+//LOG OUT route
 router.delete('/logout', async (req, res) => {
     try {
         const tokenRemove = await Token.findOneAndDelete({

@@ -50,11 +50,18 @@ const userSchema = new mongoose.Schema({
 });
 
 //virtual filed for when need to exec all data
-const User = mongoose.model('User', userSchema);
 userSchema.virtual('user', {
     ref: 'Token',
     localField: '_id',
     foreignField: 'user',
 });
+
+userSchema.virtual('user', {
+    ref: 'Recovery',
+    localField: '_id',
+    foreignField: 'user',
+});
+
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;
