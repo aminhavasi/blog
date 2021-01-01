@@ -3,6 +3,7 @@ const express = require('express');
 const { genRecoveryToken } = require('../functions/genRecoveryToken');
 const User = require('../models/user');
 const sendRecoveryEmail = require('../utils/sendREmail');
+const Recovery = require('./../models/recovery');
 const router = express.Router();
 const { recoveryEmailValidation } = require('./../validator/recoveryEmail');
 
@@ -14,7 +15,11 @@ router.post('/recovery', async (req, res) => {
         const user = await User.findOne({ email: req.body.email });
         if (!user) return res.status(400).send('this email is not exict!!');
         const recoveryToken = await genRecoveryToken(user._id, user.email);
-        //must create send with email
+        const newRecovery = await new Recovery({
+            user: user.user,
+            token: recoveryToken,
+        });
+        await newRecovery.save();
         await sendRecoveryEmail(user, recoveryToken);
         res.status(200).send('ok');
     } catch (err) {

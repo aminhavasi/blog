@@ -4,13 +4,31 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Document</title>
-        <style></style>
+        <style>
+            .main {
+                background-color: cadetblue;
+                color: white;
+                max-width: 500px;
+                margin: auto;
+                border: 3px solid slategray;
+            }
+
+            .button {
+                background-color: tomato;
+                margin-top: 20px;
+                text-align: center;
+            }
+        </style>
     </head>
     <body>
-        <div style="left: auto; right: auto">
-            <h2>recovery password {{name}}</h2>
+        <div class="main">
+            <h2 style="text-align: center">Hello {{name}}</h2>
             <div>
-                <a href="www.google.com"> clik to go </a>
+                hello friend , you earlier click send request for reset password
+                for reset password please click on blow bottom.
+            </div>
+            <div class="button">
+                <a {{token}}> reset password</a>
             </div>
         </div>
     </body>

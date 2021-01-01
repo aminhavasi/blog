@@ -7,7 +7,6 @@ let temp = fs.readFileSync(path.resolve(__dirname + '/index.html'), 'utf-8');
 let complied = hogan.compile(temp);
 
 const sendRecoveryEmail = async (user, token) => {
-    console.log(__dirname);
     let transporter = await nodemailer.createTransport({
         host: 'smtp.chmail.ir',
         port: 465,
@@ -22,7 +21,10 @@ const sendRecoveryEmail = async (user, token) => {
         from: process.env.EMAILUSER,
         to: user.email.toString(),
         subject: 'recoveryPassword',
-        html: complied.render({ email: 'pau.ahq@gmail.com', name: 'amin' }),
+        html: complied.render({
+            token: `href=${process.env.HOSTNAME}/reset/?${token}`,
+            name: user.name,
+        }),
     };
     await transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
