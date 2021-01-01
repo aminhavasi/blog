@@ -16,6 +16,7 @@
         "crypto-js": "^4.0.0",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
+        "ghasedak": "0.0.2",
         "hogan.js": "^3.0.2",
         "joi": "^17.3.0",
         "jsonwebtoken": "^8.5.1",

@@ -7,6 +7,14 @@ const recoveryEmailValidation = (email) => {
     return schema.validate(email);
 };
 
+const resetEmailValidator = (password) => {
+    const schema = Joi.object({
+        password: Joi.string().min(8).max(1024).required(),
+    });
+    return schema.validate(password);
+};
+
 module.exports = {
     recoveryEmailValidation,
+    resetEmailValidator,
 };
