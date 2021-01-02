@@ -22,4 +22,16 @@ const loginValidator = (body) => {
     });
     return shcema.validate(body);
 };
-module.exports = { registerValidator, loginValidator };
+
+const editUserValidator = (body) => {
+    const schema = Joi.object({
+        name: Joi.string().min(3).max(255),
+        email: Joi.string().email(),
+        bornDate: Joi.string().regex(dateRegexValidator),
+        password: Joi.string().min(8).max(1024),
+    });
+
+    return schema.validate(body);
+};
+
+module.exports = { registerValidator, loginValidator, editUserValidator };

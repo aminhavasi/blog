@@ -3,11 +3,16 @@ const express = require('express');
 const router = express.Router();
 const User = require('./../models/user');
 const Token = require('./../models/token');
-const { registerValidator, loginValidator } = require('./../validator/auth');
+const {
+    registerValidator,
+    loginValidator,
+    editUserValidator,
+} = require('./../validator/auth');
 const { date } = require('./../utils/moment');
 const { hash, deHash } = require('./../functions/hash');
 const { errorHandler } = require('../utils/error');
 const { genToken } = require('./../functions/genToken');
+const { auth } = require('./../middleware/authenticate');
 //register route
 router.post('/register', async (req, res) => {
     try {
@@ -66,4 +71,31 @@ router.delete('/logout', async (req, res) => {
     }
 });
 
+//edit
+router.put('/editUser', auth, async (req, res) => {
+    let size = Object.keys(req.body).length;
+    if (size === 0) return res.status(400).send('what are you doning? :/');
+    const { error } = await editUserValidator(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+    try {
+        if (req.body.password) {
+            const hashed = await hash(req.body.password);
+            req.body.password = hashed;
+        }
+        await User.findOneAndUpdate(
+            { _id: req.user.id },
+            {
+                $set: req.body,
+            },
+            { new: true },
+            (err, data) => {
+                if (err) throw errorHandler('something went wrong', 1000);
+                else res.status(200).send('success update post');
+            }
+        );
+    } catch (err) {
+        console.log(err);
+        res.status(400).send('something went wrong ');
+    }
+});
 module.exports = router;

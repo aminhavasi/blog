@@ -4,6 +4,7 @@ const db = () => {
         useCreateIndex: true,
         useNewUrlParser: true,
         useUnifiedTopology: true,
+        useFindAndModify: false,
     });
 };
 
