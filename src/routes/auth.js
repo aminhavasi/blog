@@ -99,4 +99,5 @@ router.put('/editUser', auth, async (req, res) => {
         res.status(400).send('something went wrong ');
     }
 });
+
 module.exports = router;
