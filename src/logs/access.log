@@ -132,3 +132,4 @@
 ::1 - - [02/Jan/2021:17:13:08 +0000] "PUT /api/auth/edituser HTTP/1.1" 200 19 "-" "PostmanRuntime/7.26.8"
 ::1 - - [02/Jan/2021:17:13:33 +0000] "PUT /api/auth/edituser HTTP/1.1" 200 19 "-" "PostmanRuntime/7.26.8"
 ::1 - - [02/Jan/2021:17:15:44 +0000] "PUT /api/auth/edituser HTTP/1.1" 200 19 "-" "PostmanRuntime/7.26.8"
+::1 - - [21/Jan/2021:03:23:30 +0000] "POST /api/auth/register HTTP/1.1" 201 23 "-" "PostmanRuntime/7.26.8"
